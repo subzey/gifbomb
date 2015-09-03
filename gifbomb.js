@@ -1,8 +1,34 @@
-var width = 35535;
-var height = 35535;
+#!/usr/bin/env node
+"use strict";
+/*jshint node:true*/
+/*jshint eqnull:true*/
+
+var width;
+var height;
+
+if (!process.argv[2]){
+	console.error('Usage:\tnode gifbomb [width [height]]');
+	process.exit(1);
+}
+
+width = +process.argv[2];
+if (!isFinite(width) || width <= 0 || width >= 65536){
+	console.error('width must be in range 1..65535');
+	process.exit(1);
+}
+
+if (process.argv[3] == null){
+	height = width;
+} else {
+	height = +process.argv[3];
+	if (!isFinite(height) || height <= 0 || height >= 65536){
+		console.error('height must be in range 1..65535');
+		process.exit(1);
+	}
+}
 
 
-var outStream = require('fs').createWriteStream('./gifbomb.gif');
+var outStream = process.stdout;
 
 var headerAndStuff = new Buffer([
 	0x47, 0x49, 0x46,
@@ -66,7 +92,6 @@ bitStream.end();
 chunkStream.on('finish', function(){
 	chunkStream.unpipe(outStream);
 	outStream.write(new Buffer(';'));
-	outStream.end();
 });
 
 function _byteLength(s){
