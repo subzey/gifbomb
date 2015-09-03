@@ -1,5 +1,5 @@
-var width = 35536;
-var height = 35536;
+var width = 35535;
+var height = 35535;
 
 
 var outStream = require('fs').createWriteStream('./gifbomb.gif');
